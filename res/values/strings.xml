@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="app_name">CBH to PGN</string>
+    <string name="no_files">No files found in directory\n/%s\n</string>
+    <string name="export_success">%s game(s) converted.\nCreated file:\n</string>
+    <string name="export_failure">Failed to convert the database!</string>
+
+</resources>
