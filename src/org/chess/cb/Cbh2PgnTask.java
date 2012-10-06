@@ -71,7 +71,9 @@ public class Cbh2PgnTask extends AsyncTask {
 
 	@Override
 	protected void onPostExecute(Object result) {
-		progressDlg.dismiss();
+		if (progressDlg != null && progressDlg.isShowing()) {
+			progressDlg.dismiss();
+		}
 		enableOrientationChange();
 		Integer resultValue = (Integer) result;
 		if (resultValue > 0) {
