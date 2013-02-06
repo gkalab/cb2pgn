@@ -6,7 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class Cbh2PgnTask extends AsyncTask {
+public class Cbh2PgnTask extends AsyncTask<String, Void, Integer> {
 	private static final String TAG = "CBH2PGN";
 	private Activity activity;
 	private ProgressDialog progressDlg;
@@ -29,6 +29,21 @@ public class Cbh2PgnTask extends AsyncTask {
 	/** Convert from .cbh to .pgn */
 	private final native int convertToPgn(String fileName, String outputDir);
 
+	public Cbh2PgnTask(Activity activity) {
+		super();
+		this.activity = activity;
+		Log.d(TAG, "creating progress dialog");
+		this.progressDlg = new ProgressDialog(this.activity);
+	}
+
+    protected void onPreExecute() {
+		progressDlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		progressDlg.setMessage("Converting...");
+		progressDlg.setCancelable(false);
+		Log.d(TAG, "showing progress dialog");
+		progressDlg.show();
+    }
+
 	private void progress(final int progress) {
 		this.activity.runOnUiThread(new Runnable() {
 			public void run() {
@@ -48,39 +63,25 @@ public class Cbh2PgnTask extends AsyncTask {
 	}
 
 	@Override
-	protected Object doInBackground(Object... params) {
-		this.activity = (Activity) params[0];
-		this.fileName = (String) params[1];
-		this.outputDir = (String) params[2];
-		this.progressDlg = (ProgressDialog) params[3];
+	protected Integer doInBackground(String... params) {
+		this.fileName = params[0];
+		this.outputDir = params[1];
 
-		disableOrientationChange();
 		android.os.Process
 				.setThreadPriority(android.os.Process.THREAD_PRIORITY_LESS_FAVORABLE);
 		return this.convertToPgn(fileName, outputDir);
 	}
 
-	private void enableOrientationChange() {
-		activity.setRequestedOrientation(orientation);
-	}
-
-	private void disableOrientationChange() {
-		this.orientation = activity.getRequestedOrientation();
-		activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-	}
-
 	@Override
-	protected void onPostExecute(Object result) {
+	protected void onPostExecute(Integer result) {
 		if (progressDlg != null && progressDlg.isShowing()) {
+			Log.d(TAG, "dismissing progress dialog");
 			progressDlg.dismiss();
 		}
-		enableOrientationChange();
-		Integer resultValue = (Integer) result;
-		if (resultValue > 0) {
-			((IConversionCallback) activity).success(resultValue, pgnFileName);
+		if (result > 0) {
+			((IConversionCallback) activity).success(result, pgnFileName);
 		} else {
 			((IConversionCallback) activity).failure();
 		}
 	}
-
 }
