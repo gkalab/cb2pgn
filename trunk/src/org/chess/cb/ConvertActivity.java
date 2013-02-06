@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.util.Log;
 
 public class ConvertActivity extends Activity implements IConversionCallback {
 	private static final String TAG = "CBH2PGN";
-	private ProgressDialog progressDlg;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,13 +31,9 @@ public class ConvertActivity extends Activity implements IConversionCallback {
 							+ pgnDir.getAbsolutePath());
 				}
 			}
-			this.progressDlg = new ProgressDialog(this);
-			progressDlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-			progressDlg.setMessage("Converting...");
-			progressDlg.setCancelable(false);
-			progressDlg.show();
-			new Cbh2PgnTask().execute(this, fileName, pgnDir.getAbsolutePath(),
-					progressDlg);
+			Log.d(TAG, "creating cbh2pgntask");
+			new Cbh2PgnTask(this).execute(fileName, pgnDir.getAbsolutePath());
+			Log.d(TAG, "cbh2pgntask created");
 		} else {
 			String message = "The following files are missing:";
 			for (String name : missing) {
@@ -90,6 +84,7 @@ public class ConvertActivity extends Activity implements IConversionCallback {
 		Intent intent = new Intent();
 		intent.putExtra("numGames", numGames);
 		this.setResult(RESULT_OK, intent.setAction(fileName));
+		Log.d(TAG, "success");
 		finish();
 	}
 
@@ -98,6 +93,7 @@ public class ConvertActivity extends Activity implements IConversionCallback {
 		Intent intent = new Intent();
 		intent.putExtra("numGames", -1);
 		this.setResult(RESULT_CANCELED, intent);
+		Log.d(TAG, "failure");
 		finish();
 	}
 }
