@@ -2,7 +2,6 @@ package org.chess.cb;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -36,13 +35,13 @@ public class Cbh2PgnTask extends AsyncTask<String, Void, Integer> {
 		this.progressDlg = new ProgressDialog(this.activity);
 	}
 
-    protected void onPreExecute() {
+	protected void onPreExecute() {
 		progressDlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		progressDlg.setMessage("Converting...");
 		progressDlg.setCancelable(false);
 		Log.d(TAG, "showing progress dialog");
 		progressDlg.show();
-    }
+	}
 
 	private void progress(final int progress) {
 		this.activity.runOnUiThread(new Runnable() {
