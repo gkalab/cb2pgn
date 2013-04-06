@@ -85,7 +85,7 @@ LOCAL_CFLAGS    := \
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../mstl $(LOCAL_PATH)/../util $(LOCAL_PATH)/../universalchardet $(LOCAL_PATH)/sci $(LOCAL_PATH)/cbh
 
-LOCAL_STATIC_LIBRARIES := util mstl universalchardet stlport
+LOCAL_STATIC_LIBRARIES := util mstl universalchardet stlport zlib
 
 include $(BUILD_SHARED_LIBRARY)
 
