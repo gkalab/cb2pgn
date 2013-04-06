@@ -14,7 +14,7 @@ LOCAL_LDLIBS    := -llog
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/mstl $(LOCAL_PATH)/db $(LOCAL_PATH)/util
 
-LOCAL_STATIC_LIBRARIES := mstl db
+LOCAL_STATIC_LIBRARIES := mstl db util
 
 include $(BUILD_SHARED_LIBRARY)
 
