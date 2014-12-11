@@ -248,7 +248,9 @@ Writer::beginGame(TagSet const& tags)
 					}
 					else
 					{
-						writeTag(tag::ID(i), value);
+						mstl::string fen;
+						startBoard().toFen(fen, Board::XFen);
+						writeTag(tag::ID(i), fen);
 					}
 				}
 				break;
